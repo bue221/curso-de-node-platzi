@@ -11,8 +11,9 @@ function moviesApi(app) {
 
   //listar todas las peliculas
   router.get("/", async (req, res, next) => {
+    const { tags } = req.body; //estos son los hacen la consulta pelicula?=tramtruco
     try {
-      const movies = await moviesService.getMovies();
+      const movies = await moviesService.getMovies({ tags });
       res.status(200).json({
         data: movies,
         message: "peliculas listadas",
@@ -24,8 +25,9 @@ function moviesApi(app) {
 
   //listar una pelicula
   router.get("/:movieId", async (req, res, next) => {
+    const movieId = req.params.movieId;
     try {
-      const movie = await moviesService.getMovie();
+      const movie = await moviesService.getMovie(movieId);
       res.status(200).json({
         data: movie,
         message: "pelicula listada",
@@ -37,10 +39,13 @@ function moviesApi(app) {
 
   //Crear pelicula
   router.post("/", async (req, res, next) => {
+    //const { body: movie } = req;
+    const movie = req.body;
+    console.log(req.body);
     try {
-      const movie = moviesService.createMovie();
+      const movieI = moviesService.createMovie(movie);
       res.status(201).json({
-        data: movie,
+        data: movieI,
         message: "pelicula creada",
       });
     } catch (error) {
@@ -50,10 +55,12 @@ function moviesApi(app) {
 
   //Actualizar pelicula
   router.put("/:movieId", async (req, res, next) => {
+    const movieId = req.params.movieId;
+    const movie = req.body;
     try {
-      const movie = moviesService.updateMovie();
+      const movieI = moviesService.updateMovie(movieId, movie);
       res.status(200).json({
-        data: movie,
+        data: movieI,
         message: "pelicula actualizada",
       });
     } catch (error) {
@@ -63,8 +70,9 @@ function moviesApi(app) {
 
   //Eliminar pelicula
   router.delete("/:movieId", async (req, res, next) => {
+    const movieId = req.params.movieId;
     try {
-      const movie = moviesService.deleteMovie();
+      const movie = moviesService.deleteMovie(movieId);
       res.status(200).json({
         data: movie,
         message: "pelicula eliminada",

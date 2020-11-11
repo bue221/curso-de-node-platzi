@@ -1,34 +1,36 @@
 import mock from "../utils/mocks/movies";
+import MongoLib from "../lib/mongo";
 
 class MoviesServices {
   constructor() {
     this.collection = "movies";
-    this.MongoDB = "";
+    this.MongoDB = new MongoLib();
   }
 
   //funciones de los metodos crud
-  async getMovies() {
-    const movies = await Promise.resolve(mock);
+  async getMovies({ tags }) {
+    const query = tags && { tags: { $in: tags } };
+    const movies = await this.MongoDB.getAll(this.collection, query);
     return movies || [];
   }
 
-  async getMovie() {
-    const movie = await Promise.resolve(mock.moviesMock[1]);
+  async getMovie(movieId) {
+    const movie = await this.MongoDB.get(this.collection, movieId);
     return movie || {};
   }
 
-  async createMovie() {
-    const newMovie = await Promise.resolve(mock.moviesMock[2]);
+  async createMovie(movie) {
+    const newMovie = await this.MongoDB.create(this.collection, movie);
     return newMovie;
   }
 
-  async updateMovie() {
-    const upMovie = await Promise.resolve(mock.moviesMock[3]);
+  async updateMovie(movieId, movie) {
+    const upMovie = await this.MongoDB.update(this.collection, movieId, movie);
     return upMovie;
   }
 
-  async deleteMovie() {
-    const delMovie = await Promise.resolve(mock.moviesMock[1].id);
+  async deleteMovie(movieId) {
+    const delMovie = await this.MongoDB.delete(this.collection, movieId);
     return delMovie;
   }
 }
