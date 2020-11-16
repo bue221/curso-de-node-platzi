@@ -14,6 +14,7 @@ function moviesApi(app) {
     const { tags } = req.body; //estos son los hacen la consulta pelicula?=tramtruco
     try {
       const movies = await moviesService.getMovies({ tags });
+      //throw new Error("Error trayendo peliculas");
       res.status(200).json({
         data: movies,
         message: "peliculas listadas",

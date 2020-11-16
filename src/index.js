@@ -2,11 +2,14 @@ import express from "express";
 import config from "./config/index";
 //routes
 import movieApi from "./routes/movies";
+import { logErrors, errorHandler } from "./utils/middleware/errorHandler";
 
 const app = express();
 
-//middlewires
+//middlewares
 app.use(express.json());
+//app.use(logErrors());
+//app.use(errorHandler());
 
 //rutas
 movieApi(app);
